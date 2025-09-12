@@ -40,6 +40,10 @@ function renderBooks() {
     bookTitle.setAttribute("data-testid", "bookItemTitle");
     bookTitle.innerText = book.title;
 
+    const bookId = document.createElement("p");
+    bookId.setAttribute("data-testid", "bookItemId");
+    bookId.innerText = `ID: ${book.id}`;
+
     const bookAuthor = document.createElement("p");
     bookAuthor.setAttribute("data-testid", "bookItemAuthor");
     bookAuthor.innerText = `Penulis: ${book.author}`;
@@ -74,13 +78,11 @@ function renderBooks() {
     editButton.setAttribute("data-testid", "bookItemEditButton");
     editButton.innerText = "Edit Buku";
     editButton.addEventListener("click", () => {
-      // contoh sederhana: isi ulang form dengan data buku
       document.getElementById("bookFormTitle").value = book.title;
       document.getElementById("bookFormAuthor").value = book.author;
       document.getElementById("bookFormYear").value = book.year;
       document.getElementById("bookFormIsComplete").checked = book.isComplete;
 
-      // hapus buku lama
       books = books.filter((b) => b.id !== book.id);
       saveData();
       renderBooks();
@@ -88,7 +90,7 @@ function renderBooks() {
 
     actionContainer.append(toggleButton, deleteButton, editButton);
 
-    bookItem.append(bookTitle, bookAuthor, bookYear, actionContainer);
+    bookItem.append(bookTitle,bookId, bookAuthor, bookYear, actionContainer);
 
     if (book.isComplete) {
       completeList.appendChild(bookItem);
@@ -100,7 +102,7 @@ function renderBooks() {
 
 // Tambah buku baru
 function addBook(title, author, year, isComplete) {
-  const id = +new Date();
+  const id = Number(new Date())
   const book = { id, title, author, year, isComplete };
   books.push(book);
   saveData();
@@ -151,6 +153,10 @@ document.addEventListener("DOMContentLoaded", () => {
       bookTitle.setAttribute("data-testid", "bookItemTitle");
       bookTitle.innerText = book.title;
 
+      const bookId = document.createElement("p");
+      bookId.setAttribute("data-testid", "bookItemId");
+      bookId.innerText = `ID: ${book.id}`;
+
       const bookAuthor = document.createElement("p");
       bookAuthor.setAttribute("data-testid", "bookItemAuthor");
       bookAuthor.innerText = `Penulis: ${book.author}`;
@@ -196,7 +202,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       actionContainer.append(toggleButton, deleteButton, editButton);
 
-      bookItem.append(bookTitle, bookAuthor, bookYear, actionContainer);
+      bookItem.append(bookTitle, bookId,bookAuthor, bookYear, actionContainer);
 
       if (book.isComplete) {
         completeList.appendChild(bookItem);
@@ -206,4 +212,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 });
-
