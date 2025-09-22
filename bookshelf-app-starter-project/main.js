@@ -103,7 +103,11 @@ function renderBooks() {
 // Tambah buku baru
 function addBook(title, author, year, isComplete) {
   const id = Number(new Date())
+<<<<<<< HEAD
   const book = { id, title, author, year, isComplete };
+=======
+  const book = { id, title, author, year: Number(year), isComplete };
+>>>>>>> 841db8d (membuat web personal notes)
   books.push(book);
   saveData();
   renderBooks();
@@ -119,7 +123,11 @@ document.addEventListener("DOMContentLoaded", () => {
     event.preventDefault();
     const title = document.getElementById("bookFormTitle").value;
     const author = document.getElementById("bookFormAuthor").value;
+<<<<<<< HEAD
     const year = document.getElementById("bookFormYear").value;
+=======
+    const year = Number(document.getElementById("bookFormYear").value);
+>>>>>>> 841db8d (membuat web personal notes)
     const isComplete = document.getElementById("bookFormIsComplete").checked;
 
     addBook(title, author, year, isComplete);
