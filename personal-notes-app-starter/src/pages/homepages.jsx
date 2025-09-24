@@ -23,7 +23,6 @@ export default function HomePage() {
           <p>Tidak ada catatan</p>
         </div>
       )}
-
       <div className="homepage__action">
         <Link to="/add" className="action">+</Link>
       </div>

@@ -110,9 +110,9 @@ main {
 }
 
 .detail-page {
-  margin: 0 auto;
-  margin-top: 32px; 
-  width: 90%;
+  display: flex;
+  justify-content: center;   
+  padding: 40px 16px;
 }
 
 .detail-page__title {
@@ -137,6 +137,7 @@ main {
   gap: 16px;
   bottom: 32px;
   right: 32px;
+  
 }
 
 .action {
@@ -155,7 +156,11 @@ main {
 }
 
 .add-new-page__input {
-  margin-top: 32px;
+  margin: 32px auto;              
+  max-width: 1000px;              
+  display: flex;
+  flex-direction: column;
+  align-items: center;    
 }
 
 .add-new-page__input .add-new-page__input__title {
