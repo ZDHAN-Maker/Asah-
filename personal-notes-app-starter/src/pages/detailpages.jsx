@@ -1,14 +1,13 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { showFormattedDate } from "../utils";
+import { getNote, deleteNote, archiveNote, unarchiveNote } from "../utils/local-data";
 
-export default function DetailPages({ notes, deleteNote, toggleArchive }) {
+export default function DetailPages() {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  // cari catatan berdasarkan id
-  const note = notes.find((note) => note.id === id);
+  const note = getNote(id);
 
-  // jika catatan tidak ditemukan
   if (!note) {
     return (
       <main className="detail-page">
@@ -17,36 +16,29 @@ export default function DetailPages({ notes, deleteNote, toggleArchive }) {
     );
   }
 
-  // handler arsip
   const handleToggleArchive = () => {
-    if (typeof toggleArchive === "function") {
-      toggleArchive(note.id);
+    if (note.archived) {
+      unarchiveNote(note.id);
+      navigate("/");
     } else {
-      console.error("toggleArchive belum didefinisikan di parent!");
+      archiveNote(note.id);
+      navigate("/archive");
     }
   };
 
-  // handler hapus
   const handleDelete = () => {
-    if (typeof deleteNote === "function") {
-      deleteNote(note.id);
-      navigate("/"); // kembali ke home setelah hapus
-    } else {
-      console.error("deleteNote belum didefinisikan di parent!");
-    }
+    deleteNote(note.id);
+    navigate("/");
   };
 
   return (
     <main className="detail-page">
       <div>
         <h2 className="detail-page__title">{note.title}</h2>
-        <p className="detail-page__createdAt">
-          {showFormattedDate(note.createdAt)}
-        </p>
+        <p className="detail-page__createdAt">{showFormattedDate(note.createdAt)}</p>
         <div className="detail-page__body">{note.body}</div>
       </div>
 
-      {/* tombol aksi */}
       <div className="detail-page__action">
         <button
           className="action"
@@ -58,11 +50,7 @@ export default function DetailPages({ notes, deleteNote, toggleArchive }) {
           </span>
         </button>
 
-        <button
-          className="action"
-          onClick={handleDelete}
-          title="Hapus Catatan"
-        >
+        <button className="action" onClick={handleDelete} title="Hapus Catatan">
           <span className="material-symbols-outlined">delete</span>
         </button>
       </div>
