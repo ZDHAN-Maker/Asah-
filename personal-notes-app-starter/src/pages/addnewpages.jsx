@@ -16,10 +16,6 @@ export default function AddNewPage() {
     // simpan catatan baru
     addNote({ title, body });
 
-    // reset form (opsional)
-    setTitle("");
-    setBody("");
-
     // arahkan ke halaman utama
     navigate("/");
   };
