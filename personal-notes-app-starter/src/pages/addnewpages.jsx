@@ -41,8 +41,15 @@ export default function AddNewPage() {
       />
 
       <div className="add-new-page__action">
-        <button className="action" onClick={handleSave}>✓</button>
-        <Link to="/" className="action">✕</Link>
+        {/* Tombol Simpan */}
+        <button className="action" onClick={handleSave} title="Simpan Catatan">
+          <span className="material-symbols-outlined">check</span>
+        </button>
+
+        {/* Tombol Batal */}
+        <Link to="/" className="action" title="Batal">
+          <span className="material-symbols-outlined">close</span>
+        </Link>
       </div>
     </div>
   );
