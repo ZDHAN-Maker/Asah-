@@ -35,11 +35,14 @@ export default function DetailPages() {
     <main className="detail-page">
       <div>
         <h2 className="detail-page__title">{note.title}</h2>
-        <p className="detail-page__createdAt">{showFormattedDate(note.createdAt)}</p>
+        <p className="detail-page__createdAt">
+          {showFormattedDate(note.createdAt)}
+        </p>
         <div className="detail-page__body">{note.body}</div>
       </div>
 
       <div className="detail-page__action">
+        {/* Tombol Arsip / Unarchive */}
         <button
           className="action"
           onClick={handleToggleArchive}
@@ -50,6 +53,7 @@ export default function DetailPages() {
           </span>
         </button>
 
+        {/* Tombol Hapus */}
         <button className="action" onClick={handleDelete} title="Hapus Catatan">
           <span className="material-symbols-outlined">delete</span>
         </button>

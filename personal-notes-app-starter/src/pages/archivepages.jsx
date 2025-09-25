@@ -25,10 +25,12 @@ function ArchivePage() {
 
       {/* List Arsip */}
       {filteredNotes.length > 0 ? (
-        <div className="notes-list">
+        // Gunakan kelas notes-list yang sudah Anda definisikan
+        <div className="notes-list"> 
           <NotesList notes={filteredNotes} />
         </div>
       ) : (
+        // Gunakan kelas notes-list-empty yang sudah Anda definisikan
         <div className="notes-list-empty">
           <p className="notes-empty">Tidak ada catatan</p>
         </div>

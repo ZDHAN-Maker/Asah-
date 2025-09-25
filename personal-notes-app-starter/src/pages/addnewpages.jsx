@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { addNote } from "../utils/local-data";
 
 export default function AddNewPage() {
   const [title, setTitle] = useState("");
@@ -7,7 +8,19 @@ export default function AddNewPage() {
   const navigate = useNavigate();
 
   const handleSave = () => {
-    console.log("Catatan baru:", { title, body });
+    if (!title.trim() && !body.trim()) {
+      alert("Judul atau isi catatan tidak boleh kosong!");
+      return;
+    }
+
+    // simpan catatan baru
+    addNote({ title, body });
+
+    // reset form (opsional)
+    setTitle("");
+    setBody("");
+
+    // arahkan ke halaman utama
     navigate("/");
   };
 
