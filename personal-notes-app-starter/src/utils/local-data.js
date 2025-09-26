@@ -1,29 +1,32 @@
-let notes = [
+const STORAGE_KEY = 'notes-app-data';
+
+// data awal
+const initialNotes = [
   {
     id: 'notes-1',
     title: 'Babel',
-    body: 'Babel merupakan tools open-source yang digunakan untuk mengubah sintaks ECMAScript 2015+ menjadi sintaks yang didukung oleh JavaScript engine versi lama. Babel sering dipakai ketika kita menggunakan sintaks terbaru termasuk sintaks JSX.',
+    body: 'Babel merupakan tools open-source ...',
     createdAt: '2022-04-14T04:27:34.572Z',
     archived: false,
   },
   {
     id: 'notes-2',
     title: 'Functional Component',
-    body: 'Functional component merupakan React component yang dibuat menggunakan fungsi JavaScript. Agar fungsi JavaScript dapat disebut component ia harus mengembalikan React element dan dipanggil layaknya React component.',
+    body: 'Functional component merupakan React component ...',
     createdAt: '2022-04-14T04:27:34.572Z',
     archived: false,
   },
   {
     id: 'notes-3',
     title: 'Modularization',
-    body: 'Dalam konteks pemrograman JavaScript, modularization merupakan teknik dalam memecah atau menggunakan kode dalam berkas JavaScript secara terpisah berdasarkan tanggung jawabnya masing-masing.',
+    body: 'Dalam konteks pemrograman JavaScript ...',
     createdAt: '2022-04-14T04:27:34.572Z',
     archived: false,
   },
   {
     id: 'notes-4',
     title: 'Lifecycle',
-    body: 'Dalam konteks React component, lifecycle merupakan kumpulan method yang menjadi siklus hidup mulai dari component dibuat (constructor), dicetak (render), pasca-cetak (componentDidMount), dan sebagainya. ',
+    body: 'Dalam konteks React component, lifecycle ...',
     createdAt: '2022-04-14T04:27:34.572Z',
     archived: false,
   },
@@ -37,71 +40,76 @@ let notes = [
   {
     id: 'notes-6',
     title: 'Module Bundler',
-    body: 'Dalam konteks pemrograman JavaScript, module bundler merupakan tools yang digunakan untuk menggabungkan seluruh modul JavaScript yang digunakan oleh aplikasi menjadi satu berkas.',
+    body: 'Module bundler merupakan tools untuk menggabungkan seluruh modul ...',
     createdAt: '2022-04-14T04:27:34.572Z',
     archived: false,
   },
 ];
 
+// ambil data dari localStorage
+function getNotes() {
+  const stored = localStorage.getItem(STORAGE_KEY);
+  return stored ? JSON.parse(stored) : initialNotes;
+}
+
+// simpan data ke localStorage
+function saveNotes(notes) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+}
+
 function getAllNotes() {
-  return notes;
+  return getNotes();
 }
 
 function getNote(id) {
-  const foundedNote = notes.find((note) => note.id === id);
-  return foundedNote;
+  return getNotes().find((note) => note.id === id);
 }
 
 function getActiveNotes() {
-  const activeNotes = notes.filter((note) => !note.archived);
-  return activeNotes;
+  return getNotes().filter((note) => !note.archived);
 }
 
 function getArchivedNotes() {
-  const archivedNotes = notes.filter((note) => note.archived);
-  return archivedNotes;
+  return getNotes().filter((note) => note.archived);
 }
 
 function addNote({ title, body }) {
-  notes = [...notes, {
-    id: `notes-${+new Date()}`, title: title || '(untitled)', body, createdAt: new Date().toISOString(), archived: false,
-  }];
+  const notes = getNotes();
+  const newNote = {
+    id: `notes-${+new Date()}`,
+    title: title || '(untitled)',
+    body,
+    createdAt: new Date().toISOString(),
+    archived: false,
+  };
+  notes.push(newNote);
+  saveNotes(notes);
 }
 
 function deleteNote(id) {
-  notes = notes.filter((note) => note.id !== id);
+  const notes = getNotes().filter((note) => note.id !== id);
+  saveNotes(notes);
 }
 
 function archiveNote(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      return { ...note, archived: true };
-    }
-    return note;
-  });
+  const notes = getNotes().map((note) =>
+    note.id === id ? { ...note, archived: true } : note
+  );
+  saveNotes(notes);
 }
 
 function unarchiveNote(id) {
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      return { ...note, archived: false };
-    }
-
-    return note;
-  });
+  const notes = getNotes().map((note) =>
+    note.id === id ? { ...note, archived: false } : note
+  );
+  saveNotes(notes);
 }
 
 function editNote({ id, title, body }) {
-  const noteToEdit = notes.find((note) => note.id === id);
-  noteToEdit.title = title;
-  noteToEdit.body = body;
-
-  notes = notes.map((note) => {
-    if (note.id === id) {
-      return note;
-    }
-    return note;
-  });
+  const notes = getNotes().map((note) =>
+    note.id === id ? { ...note, title, body } : note
+  );
+  saveNotes(notes);
 }
 
 export {

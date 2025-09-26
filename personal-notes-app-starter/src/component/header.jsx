@@ -1,16 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
 function Header() {
   return (
     <header>
       <h1>
-        <Link to="/">Aplikasi Catatan</Link>
+        <Link to='/'>Aplikasi Catatan</Link>
       </h1>
-      <nav className="navigation">
+      <nav className='navigation'>
         <ul>
           <li>
-            <Link to="/arsip">Arsip</Link>
+            <Link to='/arsip'>Arsip</Link>
           </li>
         </ul>
       </nav>
