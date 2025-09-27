@@ -9,9 +9,8 @@ import LoginPage from "./pages/loginpages";
 import RegisterPage from "./pages/registerpages";
 import { AuthContext } from "./contexts/AuthContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
-import { LanguageProvider } from "./contexts/languagecontext"; 
+import { LanguageProvider } from "./contexts/languagecontext";
 
-// Komponen untuk proteksi route
 function PrivateRoute({ children }) {
   const { user } = useContext(AuthContext);
   return user ? children : <Navigate to="/login" />;
@@ -25,11 +24,10 @@ function App() {
       <LocaleProvider>
         <Router>
           <div className="app-container">
-            {/* Header tampil di semua halaman */}
             <Header />
 
             <Routes>
-              {/* Auth routes */}
+              {/* Public routes */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
 
@@ -67,7 +65,7 @@ function App() {
                 }
               />
 
-             
+              {/* Fallback */}
               <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
             </Routes>
           </div>

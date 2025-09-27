@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { LanguageContext } from "../contexts/languagecontext";
+import { LanguageContext, LanguageProvider } from "../contexts/languagecontext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -27,31 +27,31 @@ export default function LoginPage() {
   };
 
   return (
-    <main>
-      <h2>{t.loginTitle}</h2>
-      <form className="input-login" onSubmit={handleSubmit}>
-        <label>{t.email}</label>
-        <input
-          type="email"
-          placeholder={t.emailPlaceholder}
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
+      <main>
+        <h2>{t.loginTitle}</h2>
+        <form className="input-login" onSubmit={handleSubmit}>
+          <label>{t.email}</label>
+          <input
+            type="email"
+            placeholder={t.emailPlaceholder}
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <label>{t.password}</label>
-        <input
-          type="password"
-          placeholder={t.passwordPlaceholder}
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+          <label>{t.password}</label>
+          <input
+            type="password"
+            placeholder={t.passwordPlaceholder}
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-        <button type="submit">{t.loginButton}</button>
-      </form>
+          <button type="submit">{t.loginButton}</button>
+        </form>
 
-      <p>
-        {t.registerText} <Link to="/register">{t.registerLink}</Link>
-      </p>
-    </main>
+        <p>
+          {t.registerText} <Link to="/register">{t.registerLink}</Link>
+        </p>
+      </main>
   );
 }

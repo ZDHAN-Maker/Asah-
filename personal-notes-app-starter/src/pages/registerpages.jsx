@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LanguageContext } from "../contexts/languagecontext";
+import { LanguageContext, LanguageProvider } from "../contexts/languagecontext";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -43,6 +43,7 @@ export default function RegisterPage() {
   };
 
   return (
+    <LanguageProvider>
     <main>
       <h2>{t.registerTitle}</h2>
       <form className="input-register" onSubmit={handleRegister}>
@@ -85,5 +86,6 @@ export default function RegisterPage() {
         {t.loginText} <Link to="/login">{t.loginLink}</Link>
       </p>
     </main>
+    </LanguageProvider> 
   );
 }

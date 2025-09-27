@@ -9,11 +9,24 @@ export const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchUser() {
+      const token = localStorage.getItem("accessToken");
+      if (!token) {
+        setUser(null);
+        setLoading(false);
+        return;
+      }
+
       const { error, data } = await getUserLogged();
-      if (!error) setUser(data);
+      if (!error) {
+        setUser(data);
+      } else {
+        setUser(null);
+      }
+      setLoading(false);
     }
     fetchUser();
   }, []);
@@ -22,6 +35,8 @@ export function AuthProvider({ children }) {
     const { error, data } = await apiLogin({ email, password });
     if (!error) {
       putAccessToken(data.accessToken);
+      localStorage.setItem("accessToken", data.accessToken);
+
       const { data: userData } = await getUserLogged();
       setUser(userData);
     }
@@ -34,7 +49,7 @@ export function AuthProvider({ children }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
