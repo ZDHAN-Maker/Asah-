@@ -1,83 +1,89 @@
-// src/pages/RegisterPage.jsx
-import { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import Header from '../component/header';
+import { useState, useContext } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { LanguageContext } from "../contexts/languagecontext";
 
 export default function RegisterPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirm, setConfirm] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
+  const { language, translations } = useContext(LanguageContext);
+
+  const t = translations[language];
 
   const handleRegister = (e) => {
     e.preventDefault();
 
     if (password !== confirm) {
-      alert('Password dan konfirmasi password tidak sama!');
+      alert(
+        language === "id"
+          ? "Password dan konfirmasi password tidak sama!"
+          : "Password and confirmation do not match!"
+      );
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem('users')) || [];
+    const users = JSON.parse(localStorage.getItem("users")) || [];
     if (users.find((u) => u.email === email)) {
-      alert('Email sudah terdaftar!');
+      alert(language === "id" ? "Email sudah terdaftar!" : "Email already registered!");
       return;
     }
 
     const newUser = { name, email, password };
     users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    localStorage.setItem("users", JSON.stringify(users));
 
-    alert('Pendaftaran berhasil! Silakan login.');
-    navigate('/login');
+    alert(
+      language === "id"
+        ? "Pendaftaran berhasil! Silakan login."
+        : "Registration successful! Please login."
+    );
+    navigate("/login");
   };
 
   return (
-    <>
-    <Header />
     <main>
-      <h2>Buat akun baru</h2>
+      <h2>{t.registerTitle}</h2>
       <form className="input-register" onSubmit={handleRegister}>
-        <label>Nama</label>
+        <label>{t.name}</label>
         <input
           type="text"
-          placeholder="Masukkan nama"
+          placeholder={t.namePlaceholder}
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
 
-        <label>Email</label>
+        <label>{t.email}</label>
         <input
           type="email"
-          placeholder="Masukkan email"
+          placeholder={t.emailPlaceholder}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <label>Password</label>
+        <label>{t.password}</label>
         <input
           type="password"
-          placeholder="Masukkan password"
+          placeholder={t.passwordPlaceholder}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <label>Konfirmasi Password</label>
+        <label>{t.confirmPassword}</label>
         <input
           type="password"
-          placeholder="Ulangi password"
+          placeholder={t.confirmPasswordPlaceholder}
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
         />
 
-        <button type="submit">Daftar</button>
+        <button type="submit">{t.registerButton}</button>
       </form>
 
       <p>
-        Sudah punya akun? <Link to="/login">Login di sini</Link>
+        {t.loginText} <Link to="/login">{t.loginLink}</Link>
       </p>
     </main>
-    </>
-    
   );
 }

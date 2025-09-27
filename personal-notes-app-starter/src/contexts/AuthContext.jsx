@@ -1,66 +1,41 @@
-import React, { createContext, useState, useEffect } from 'react';
+import { createContext, useState, useEffect } from "react";
+import {
+  login as apiLogin,
+  putAccessToken,
+  getUserLogged,
+} from "../utils/network-data";
 
 export const AuthContext = createContext();
 
-export const AuthProvider = ({ children }) => {
+export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
 
-  // Cek user dari localStorage saat pertama kali load
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
+    async function fetchUser() {
+      const { error, data } = await getUserLogged();
+      if (!error) setUser(data);
     }
+    fetchUser();
   }, []);
 
-  // Simpan user ke localStorage setiap kali berubah
-  useEffect(() => {
-    if (user) {
-      localStorage.setItem('user', JSON.stringify(user));
-    } else {
-      localStorage.removeItem('user');
+  const login = async ({ email, password }) => {
+    const { error, data } = await apiLogin({ email, password });
+    if (!error) {
+      putAccessToken(data.accessToken);
+      const { data: userData } = await getUserLogged();
+      setUser(userData);
     }
-  }, [user]);
-
-  // Fungsi login
-  const login = (email, password) => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const existingUser = storedUsers.find(
-      (u) => u.email === email && u.password === password
-    );
-
-    if (existingUser) {
-      setUser({ email: existingUser.email, name: existingUser.name });
-      return true;
-    }
-    return false;
+    return !error;
   };
 
-  // Fungsi register
-  const register = (name, email, password) => {
-    const storedUsers = JSON.parse(localStorage.getItem('users')) || [];
-    const userExists = storedUsers.find((u) => u.email === email);
-
-    if (userExists) {
-      return false; // Email sudah dipakai
-    }
-
-    const newUser = { name, email, password };
-    storedUsers.push(newUser);
-    localStorage.setItem('users', JSON.stringify(storedUsers));
-
-    setUser({ email: newUser.email, name: newUser.name });
-    return true;
-  };
-
-  // Fungsi logout
   const logout = () => {
+    localStorage.removeItem("accessToken");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-};
+}

@@ -1,54 +1,57 @@
-
-import { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-import Header from '../component/header';
+import { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthContext";
+import { LanguageContext } from "../contexts/languagecontext";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const { login } = useContext(AuthContext);
+  const { language, translations } = useContext(LanguageContext);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const t = translations[language];
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (login(email, password)) {
-      navigate('/');
+    const success = await login({ email, password });
+    if (success) {
+      navigate("/");
     } else {
-      alert('Email atau password salah!');
+      alert(
+        language === "id"
+          ? "Email atau password salah!"
+          : "Invalid email or password!"
+      );
     }
   };
 
   return (
-    <>
-    <Header />
     <main>
-      <h2>Yuk, login untuk menggunakan aplikasi.</h2>
+      <h2>{t.loginTitle}</h2>
       <form className="input-login" onSubmit={handleSubmit}>
-        <label>Email</label>
+        <label>{t.email}</label>
         <input
           type="email"
-          placeholder="Masukkan email"
+          placeholder={t.emailPlaceholder}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
 
-        <label>Password</label>
+        <label>{t.password}</label>
         <input
           type="password"
-          placeholder="Masukkan password"
+          placeholder={t.passwordPlaceholder}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
 
-        <button type="submit">Login</button>
+        <button type="submit">{t.loginButton}</button>
       </form>
 
       <p>
-        Belum punya akun? <Link to="/register">Daftar di sini</Link>
+        {t.registerText} <Link to="/register">{t.registerLink}</Link>
       </p>
     </main>
-    </>
-    
   );
 }
