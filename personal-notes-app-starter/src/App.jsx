@@ -12,8 +12,11 @@ import { LocaleProvider } from "./contexts/LocaleContext";
 import { LanguageProvider } from "./contexts/languagecontext";
 
 function PrivateRoute({ children }) {
-  const { user } = useContext(AuthContext);
-  return user ? children : <Navigate to="/login" />;
+  const { user, loading } = useContext(AuthContext);
+
+  if (loading) return <p>Loading...</p>;
+
+  return user ? children : <Navigate to="/login" replace />;
 }
 
 function App() {
@@ -24,14 +27,16 @@ function App() {
       <LocaleProvider>
         <Router>
           <div className="app-container">
+
+            {/* Selalu render Header */}
             <Header />
 
             <Routes>
-              {/* Public routes */}
+              {/* Route publik */}
               <Route path="/login" element={<LoginPage />} />
               <Route path="/register" element={<RegisterPage />} />
 
-              {/* Protected routes */}
+              {/* Route privat */}
               <Route
                 path="/"
                 element={
@@ -65,8 +70,8 @@ function App() {
                 }
               />
 
-              {/* Fallback */}
-              <Route path="*" element={<Navigate to={user ? "/" : "/login"} />} />
+              {/* Default redirect */}
+              <Route path="*" element={<Navigate to={user ? "/" : "/login"} replace />} />
             </Routes>
           </div>
         </Router>
@@ -74,5 +79,6 @@ function App() {
     </LanguageProvider>
   );
 }
+
 
 export default App;
