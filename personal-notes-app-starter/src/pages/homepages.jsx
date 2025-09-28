@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import NotesList from '../component/noteslist';
 import SearchBar from '../component/searchbar';
 import { getActiveNotes } from '../utils/local-data';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../contexts/languagecontext';
 
 export default function HomePage() {
   const [notes] = useState(getActiveNotes());

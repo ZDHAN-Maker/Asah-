@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import NoteItem from './notesitem';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../contexts/languagecontext';
 
 function NotesList({ notes }) {
   const { language, translations } = useContext(LanguageContext);

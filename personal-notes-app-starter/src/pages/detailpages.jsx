@@ -7,7 +7,7 @@ import {
   archiveNote,
   unarchiveNote,
 } from "../utils/local-data";
-import { LanguageContext } from "../contexts/LanguageContext";
+import { LanguageContext } from "../contexts/languagecontext";
 
 export default function DetailPages() {
   const { id } = useParams();

@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { showFormattedDate } from '../utils/local-data';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../contexts/languagecontext';
 
 function NoteItem({ id, title, createdAt, body }) {
   const { language } = useContext(LanguageContext);

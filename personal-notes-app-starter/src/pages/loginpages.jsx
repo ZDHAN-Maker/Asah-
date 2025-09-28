@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { LanguageContext, LanguageProvider } from "../contexts/LanguageContext";
+import { LanguageContext, LanguageProvider } from "../contexts/languagecontext";
 import { LocaleContext } from "../contexts/LocaleContext";
 
 export default function LoginPage() {

@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { addNote } from '../utils/local-data';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../contexts/languagecontext';
 
 export default function AddNewPage() {
   const [title, setTitle] = useState('');

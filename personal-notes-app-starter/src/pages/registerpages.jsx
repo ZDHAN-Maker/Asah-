@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LanguageContext, LanguageProvider } from "../contexts/LanguageContext";
+import { LanguageContext, LanguageProvider } from "../contexts/languagecontext";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");

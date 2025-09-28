@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import { getArchivedNotes } from '../utils/local-data';
 import NotesList from '../component/noteslist';
 import SearchBar from '../component/searchbar';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../contexts/languagecontext';
 
 function ArchivePage() {
   const [keyword, setKeyword] = useState('');

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../contexts/languagecontext';
 
 export default function SearchBar({ keyword, setKeyword }) {
   const { language } = useContext(LanguageContext);
