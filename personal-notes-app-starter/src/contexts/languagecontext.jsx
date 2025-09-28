@@ -25,17 +25,24 @@ const translations = {
         loginText: "Sudah punya akun?",
         loginLink: "Login di sini",
 
-        //home page
-        activeNotes: 'Catatan Aktif',
-        emptyNotes: 'Tidak ada catatan',
-        addNote: 'Tambah Catatan',
+        // Home page
+        activeNotes: "Catatan Aktif",
+        emptyNotes: "Tidak ada catatan",
+        addNote: "Tambah Catatan",
 
-        //Detail page
+        // Detail page
         detailNotFound: "Catatan tidak ditemukan",
         confirmDelete: "Apakah Anda yakin ingin menghapus catatan ini?",
         archive: "Arsipkan",
         unarchive: "Pindahkan ke Aktif",
         delete: "Hapus Catatan",
+
+        // Add Note page
+        addNoteTitlePlaceholder: "Judul Catatan ...",
+        addNoteBodyPlaceholder: "Tulis catatanmu di sini ...",
+        saveNote: "Simpan Catatan",
+        cancel: "Batal",
+        alertEmpty: "Judul atau isi catatan tidak boleh kosong!"
     },
     en: {
         // Login Page
@@ -58,20 +65,26 @@ const translations = {
         loginText: "Already have an account?",
         loginLink: "Login here",
 
-        //home page
-        activeNotes: 'Active Notes',
-        emptyNotes: 'No notes available',
-        addNote: 'Add Note',
+        // Home page
+        activeNotes: "Active Notes",
+        emptyNotes: "No notes available",
+        addNote: "Add Note",
 
-        //Detail page
+        // Detail page
         detailNotFound: "Note not found",
         confirmDelete: "Are you sure you want to delete this note?",
         archive: "Archive",
         unarchive: "Move to Active",
         delete: "Delete Note",
+
+        // Add Note page
+        addNoteTitlePlaceholder: "Note Title ...",
+        addNoteBodyPlaceholder: "Write your note here ...",
+        saveNote: "Save Note",
+        cancel: "Cancel",
+        alertEmpty: "Title or body cannot be empty!"
     },
 };
-
 
 export function LanguageProvider({ children }) {
     const [language, setLanguage] = useState("id");

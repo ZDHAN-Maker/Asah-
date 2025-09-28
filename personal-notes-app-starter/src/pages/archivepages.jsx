@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { getArchivedNotes } from '../utils/local-data';
 import NotesList from '../component/noteslist';
 import SearchBar from '../component/searchbar';
+import { LanguageContext } from '../contexts/LanguageContext';
 
 function ArchivePage() {
   const [keyword, setKeyword] = useState('');
   const archivedNotes = getArchivedNotes();
+
+  const { language, translations } = useContext(LanguageContext);
+  const t = translations[language];
 
   const filteredNotes = archivedNotes.filter((note) =>
     note.title.toLowerCase().includes(keyword.toLowerCase())
@@ -13,12 +17,12 @@ function ArchivePage() {
 
   return (
     <main>
-      <h2>Catatan Arsip</h2>
+      <h2>{language === "id" ? "Catatan Arsip" : "Archived Notes"}</h2>
 
       <SearchBar
         keyword={keyword}
         keywordChange={(value) => setKeyword(value)}
-        placeholder='Cari berdasarkan judul ...'
+        placeholder={t.addNoteTitlePlaceholder} 
       />
 
       {filteredNotes.length > 0 ? (
@@ -27,7 +31,7 @@ function ArchivePage() {
         </div>
       ) : (
         <div className='notes-list-empty'>
-          <p className='notes-empty'>Tidak ada catatan</p>
+          <p className='notes-empty'>{t.emptyNotes}</p>
         </div>
       )}
     </main>

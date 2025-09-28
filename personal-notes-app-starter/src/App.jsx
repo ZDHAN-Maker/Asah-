@@ -9,7 +9,7 @@ import LoginPage from "./pages/loginpages";
 import RegisterPage from "./pages/registerpages";
 import { AuthContext } from "./contexts/AuthContext";
 import { LocaleProvider } from "./contexts/LocaleContext";
-import { LanguageProvider } from "./contexts/languagecontext";
+import { LanguageProvider } from "./contexts/LanguageContext";
 
 function PrivateRoute({ children }) {
   const { user, loading } = useContext(AuthContext);

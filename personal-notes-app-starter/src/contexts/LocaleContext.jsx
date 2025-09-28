@@ -3,22 +3,17 @@ import { createContext, useState, useEffect } from "react";
 export const LocaleContext = createContext();
 
 export function LocaleProvider({ children }) {
-  const [locale, setLocale] = useState("id");
+  const [locale, setLocale] = useState(() => {
+    // default ambil dari localStorage atau 'id'
+    return localStorage.getItem("locale") || "id";
+  });
 
-  // Simpan preferensi bahasa ke localStorage
   useEffect(() => {
-    const savedLocale = localStorage.getItem("locale");
-    if (savedLocale) {
-      setLocale(savedLocale);
-    }
-  }, []);
+    localStorage.setItem("locale", locale);
+  }, [locale]);
 
   const toggleLocale = () => {
-    setLocale((prev) => {
-      const newLocale = prev === "id" ? "en" : "id";
-      localStorage.setItem("locale", newLocale);
-      return newLocale;
-    });
+    setLocale((prev) => (prev === "id" ? "en" : "id"));
   };
 
   return (

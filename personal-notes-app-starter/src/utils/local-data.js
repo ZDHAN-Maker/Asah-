@@ -1,62 +1,52 @@
-const STORAGE_KEY = 'notes-app-data';
+const STORAGE_KEY = "notes-app-data";
 
-// data awal
-const initialNotes = [
-  {
-    id: 'notes-1',
-    title: 'Babel',
-    body: 'Babel merupakan tools open-source ...',
-    createdAt: '2022-04-14T04:27:34.572Z',
-    archived: false,
-  },
-  {
-    id: 'notes-2',
-    title: 'Functional Component',
-    body: 'Functional component merupakan React component ...',
-    createdAt: '2022-04-14T04:27:34.572Z',
-    archived: false,
-  },
-  {
-    id: 'notes-3',
-    title: 'Modularization',
-    body: 'Dalam konteks pemrograman JavaScript ...',
-    createdAt: '2022-04-14T04:27:34.572Z',
-    archived: false,
-  },
-  {
-    id: 'notes-4',
-    title: 'Lifecycle',
-    body: 'Dalam konteks React component, lifecycle ...',
-    createdAt: '2022-04-14T04:27:34.572Z',
-    archived: false,
-  },
-  {
-    id: 'notes-5',
-    title: 'ESM',
-    body: 'ESM (ECMAScript Module) merupakan format modularisasi standar JavaScript.',
-    createdAt: '2022-04-14T04:27:34.572Z',
-    archived: false,
-  },
-  {
-    id: 'notes-6',
-    title: 'Module Bundler',
-    body: 'Module bundler merupakan tools untuk menggabungkan seluruh modul ...',
-    createdAt: '2022-04-14T04:27:34.572Z',
-    archived: false,
-  },
-];
+// fungsi untuk mendapatkan catatan awal berdasarkan status login
+function getInitialNotes() {
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  
+  if (!userData || !userData.email) {
+    return [
+      {
+        id: `notes-${+new Date()}`,
+        title: "Catatan Pertama",
+        body: "Silakan registrasi/login untuk mulai membuat catatan.",
+        createdAt: new Date().toISOString(),
+        archived: false,
+      },
+    ];
+  }
+
+  
+  return [
+    {
+      id: `notes-${+new Date()}`,
+      title: userData.email,
+      body: "Ini adalah catatan awal Anda. Silakan edit atau tambah catatan baru!",
+      createdAt: new Date().toISOString(),
+      archived: false,
+    },
+  ];
+}
 
 // ambil data dari localStorage
 function getNotes() {
-  const stored = localStorage.getItem(STORAGE_KEY);
-  return stored ? JSON.parse(stored) : initialNotes;
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : getInitialNotes();
+  } catch (err) {
+    console.error("Error parsing notes:", err);
+    return getInitialNotes();
+  }
 }
+
 
 // simpan data ke localStorage
 function saveNotes(notes) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
 }
 
+// fungsi-fungsi CRUD
 function getAllNotes() {
   return getNotes();
 }
@@ -77,7 +67,7 @@ function addNote({ title, body }) {
   const notes = getNotes();
   const newNote = {
     id: `notes-${+new Date()}`,
-    title: title || '(untitled)',
+    title: title || "(untitled)",
     body,
     createdAt: new Date().toISOString(),
     archived: false,
@@ -112,6 +102,15 @@ function editNote({ id, title, body }) {
   saveNotes(notes);
 }
 
+function showFormattedDate(date, lang = 'id') {
+  return new Date(date).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+}
+
+
 export {
   getAllNotes,
   getActiveNotes,
@@ -122,4 +121,5 @@ export {
   archiveNote,
   unarchiveNote,
   addNote,
+  showFormattedDate,
 };

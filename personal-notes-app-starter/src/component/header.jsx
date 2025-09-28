@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../contexts/AuthContext";
-import { LocaleContext } from "../contexts/LocaleContext";
+import { LanguageContext } from "../contexts/LanguageContext";
 import ThemeToggle from "./themetoggle";
 
 export default function Header() {
   const { user, logout } = useContext(AuthContext);
-  const { locale, toggleLocale } = useContext(LocaleContext);
+  const { language, toggleLanguage } = useContext(LanguageContext);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -18,7 +18,7 @@ export default function Header() {
     <header className="app-header">
       <h1>
         <Link to="/" className="app-title-link">
-          {locale === "id" ? "Aplikasi Catatan" : "Notes App"}
+          {language === "id" ? "Aplikasi Catatan" : "Notes App"}
         </Link>
       </h1>
 
@@ -26,26 +26,36 @@ export default function Header() {
         {/* Jika belum login */}
         {!user && (
           <>
-            <button className="toggle-locale" title="Ganti Bahasa" onClick={toggleLocale}>
+            <button
+              className="toggle-language"
+              title={language === "id" ? "Ganti Bahasa" : "Change Language"}
+              onClick={toggleLanguage}
+            >
               <span className="material-symbols-outlined">g_translate</span>
-              {locale.toUpperCase()}
+              {language.toUpperCase()}
             </button>
             <ThemeToggle />
+            <Link to="/login">{language === "id" ? "Masuk" : "Login"}</Link>
+            <Link to="/register">{language === "id" ? "Daftar" : "Register"}</Link>
           </>
         )}
 
         {/* Jika sudah login */}
         {user && (
           <>
-            <button className="toggle-locale" title="Ganti Bahasa" onClick={toggleLocale}>
+            <button
+              className="toggle-language"
+              title={language === "id" ? "Ganti Bahasa" : "Change Language"}
+              onClick={toggleLanguage}
+            >
               <span className="material-symbols-outlined">g_translate</span>
-              {locale.toUpperCase()}
+              {language.toUpperCase()}
             </button>
-            <Link to="/arsip">{locale === "id" ? "Arsip" : "Archive"}</Link>
+            <Link to="/arsip">{language === "id" ? "Arsip" : "Archive"}</Link>
             <ThemeToggle />
             <button className="button-logout" onClick={handleLogout}>
               <span className="material-symbols-outlined">logout</span>
-              {locale === "id" ? "Keluar" : "Logout"}
+              {language === "id" ? "Keluar" : "Logout"}
             </button>
           </>
         )}

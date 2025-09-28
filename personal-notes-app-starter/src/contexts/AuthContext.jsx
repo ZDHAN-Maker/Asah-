@@ -3,6 +3,7 @@ import {
   login as apiLogin,
   putAccessToken,
   getUserLogged,
+  register as apiRegister,
 } from "../utils/network-data";
 
 export const AuthContext = createContext();
@@ -11,6 +12,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  // cek status login saat komponen dimount
   useEffect(() => {
     async function fetchUser() {
       const token = localStorage.getItem("accessToken");
@@ -20,6 +22,8 @@ export function AuthProvider({ children }) {
         return;
       }
 
+      putAccessToken(token); // ⬅️ supaya dipakai di getUserLogged
+
       const { error, data } = await getUserLogged();
       if (!error) {
         setUser(data);
@@ -28,28 +32,43 @@ export function AuthProvider({ children }) {
       }
       setLoading(false);
     }
+
     fetchUser();
   }, []);
 
+  // fungsi login
   const login = async ({ email, password }) => {
     const { error, data } = await apiLogin({ email, password });
-    if (!error) {
+    console.log("Login response:", { error, data });
+
+    if (!error && data?.accessToken) {
       putAccessToken(data.accessToken);
       localStorage.setItem("accessToken", data.accessToken);
 
-      const { data: userData } = await getUserLogged();
-      setUser(userData);
+      const { error: userError, data: userData } = await getUserLogged();
+      if (!userError) {
+        setUser(userData);
+        return true;
+      }
     }
+    return false;
+  };
+
+  // fungsi register
+  const register = async ({ name, email, password }) => {
+    const { error, data } = await apiRegister({ name, email, password });
+    console.log("Register response:", { error, data });
     return !error;
   };
 
+  // fungsi logout
   const logout = () => {
     localStorage.removeItem("accessToken");
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, register, logout, loading }}>
       {loading ? <p>Loading...</p> : children}
     </AuthContext.Provider>
   );

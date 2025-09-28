@@ -1,7 +1,8 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthContext";
-import { LanguageContext, LanguageProvider } from "../contexts/languagecontext";
+import { LanguageContext, LanguageProvider } from "../contexts/LanguageContext";
+import { LocaleContext } from "../contexts/LocaleContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,7 +10,7 @@ export default function LoginPage() {
   const { login } = useContext(AuthContext);
   const { language, translations } = useContext(LanguageContext);
   const navigate = useNavigate();
-
+  const { locale } = useContext(LocaleContext);
   const t = translations[language];
 
   const handleSubmit = async (e) => {

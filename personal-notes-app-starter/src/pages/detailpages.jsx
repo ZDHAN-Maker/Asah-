@@ -7,14 +7,14 @@ import {
   archiveNote,
   unarchiveNote,
 } from "../utils/local-data";
-import { LanguageContext } from "../contexts/languagecontext";
+import { LanguageContext } from "../contexts/LanguageContext";
 
 export default function DetailPages() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [note, setNote] = useState(null);
   const { language, translations } = useContext(LanguageContext);
-  const t = translations[language]; // ambil terjemahan sesuai bahasa
+  const t = translations[language]; 
 
   useEffect(() => {
     const fetchedNote = getNote(id);
@@ -52,7 +52,7 @@ export default function DetailPages() {
       <div>
         <h2 className="detail-page__title">{note.title}</h2>
         <p className="detail-page__createdAt">
-          {showFormattedDate(note.createdAt)}
+          {showFormattedDate(note.createdAt, language)}
         </p>
         <div className="detail-page__body">{note.body}</div>
       </div>
