@@ -1,4 +1,12 @@
-const STORAGE_KEY = "notes-app-data";
+const STORAGE_PREFIX = "notes-app-data-";
+
+// ambil key berdasarkan user yang login
+function getStorageKey() {
+  const userData = JSON.parse(localStorage.getItem("user"));
+  return userData && userData.email
+    ? `${STORAGE_PREFIX}${userData.email}`
+    : `${STORAGE_PREFIX}guest`;
+}
 
 // fungsi untuk mendapatkan catatan awal berdasarkan status login
 function getInitialNotes() {
@@ -19,7 +27,7 @@ function getInitialNotes() {
   return [
     {
       id: `notes-${+new Date()}`,
-      title: `Welcome to Notes, ${userData.name}!`, 
+      title: `Welcome to Notes, ${userData.name}!`,
       body: "Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.",
       createdAt: new Date().toISOString(),
       archived: false,
@@ -27,11 +35,11 @@ function getInitialNotes() {
   ];
 }
 
-
 // ambil data dari localStorage
 function getNotes() {
+  const key = getStorageKey();
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
+    const stored = localStorage.getItem(key);
     return stored ? JSON.parse(stored) : getInitialNotes();
   } catch (err) {
     console.error("Error parsing notes:", err);
@@ -39,10 +47,10 @@ function getNotes() {
   }
 }
 
-
 // simpan data ke localStorage
 function saveNotes(notes) {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+  const key = getStorageKey();
+  localStorage.setItem(key, JSON.stringify(notes));
 }
 
 // fungsi-fungsi CRUD
@@ -101,14 +109,16 @@ function editNote({ id, title, body }) {
   saveNotes(notes);
 }
 
-function showFormattedDate(date, lang = 'id') {
-  return new Date(date).toLocaleDateString(lang === 'id' ? 'id-ID' : 'en-US', {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
+function showFormattedDate(date, lang = "id") {
+  return new Date(date).toLocaleDateString(
+    lang === "id" ? "id-ID" : "en-US",
+    {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }
+  );
 }
-
 
 export {
   getAllNotes,
