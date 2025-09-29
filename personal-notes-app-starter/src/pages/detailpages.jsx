@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState, useContext } from "react";
-import { showFormattedDate } from "../utils";
+import { showFormattedDate } from "../utils";  // <-- perbaikan di sini
 import {
   getNote,
   deleteNote,
@@ -14,7 +14,7 @@ export default function DetailPages() {
   const navigate = useNavigate();
   const [note, setNote] = useState(null);
   const { language, translations } = useContext(LanguageContext);
-  const t = translations[language]; 
+  const t = translations[language];
 
   useEffect(() => {
     const fetchedNote = getNote(id);

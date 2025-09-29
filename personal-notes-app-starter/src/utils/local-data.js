@@ -1,5 +1,13 @@
 const STORAGE_PREFIX = "notes-app-data-";
 
+// Helper untuk buat ID unik
+function generateId() {
+  if (crypto.randomUUID) {
+    return `notes-${crypto.randomUUID()}`;
+  }
+  return `notes-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+}
+
 // ambil key berdasarkan user yang login
 function getStorageKey() {
   const userData = JSON.parse(localStorage.getItem("user"));
@@ -15,9 +23,9 @@ function getInitialNotes() {
   if (!userData || !userData.name) {
     return [
       {
-        id: `notes-${+new Date()}`,
+        id: generateId(),
         title: "Catatan Pertama",
-        body: "Silakan registrasi/login untuk mulai membuat catatan.",
+        body: "Silakan login atau registrasi untuk mulai membuat catatan.",
         createdAt: new Date().toISOString(),
         archived: false,
       },
@@ -26,9 +34,9 @@ function getInitialNotes() {
 
   return [
     {
-      id: `notes-${+new Date()}`,
-      title: `Welcome to Notes, ${userData.name}!`,
-      body: "Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.",
+      id: generateId(),
+      title: `Haloo Welcome, ${userData.name}!`,
+      body: "Selamat datang di Notes Pribadi kamu. Ini adalah catatan pertama kamu.",
       createdAt: new Date().toISOString(),
       archived: false,
     },
@@ -59,7 +67,7 @@ function getAllNotes() {
 }
 
 function getNote(id) {
-  return getNotes().find((note) => note.id === id);
+  return getNotes().find((note) => String(note.id) === String(id));
 }
 
 function getActiveNotes() {
@@ -73,7 +81,7 @@ function getArchivedNotes() {
 function addNote({ title, body }) {
   const notes = getNotes();
   const newNote = {
-    id: `notes-${+new Date()}`,
+    id: generateId(),
     title: title || "(untitled)",
     body,
     createdAt: new Date().toISOString(),
@@ -84,27 +92,27 @@ function addNote({ title, body }) {
 }
 
 function deleteNote(id) {
-  const notes = getNotes().filter((note) => note.id !== id);
+  const notes = getNotes().filter((note) => String(note.id) !== String(id));
   saveNotes(notes);
 }
 
 function archiveNote(id) {
   const notes = getNotes().map((note) =>
-    note.id === id ? { ...note, archived: true } : note
+    String(note.id) === String(id) ? { ...note, archived: true } : note
   );
   saveNotes(notes);
 }
 
 function unarchiveNote(id) {
   const notes = getNotes().map((note) =>
-    note.id === id ? { ...note, archived: false } : note
+    String(note.id) === String(id) ? { ...note, archived: false } : note
   );
   saveNotes(notes);
 }
 
 function editNote({ id, title, body }) {
   const notes = getNotes().map((note) =>
-    note.id === id ? { ...note, title, body } : note
+    String(note.id) === String(id) ? { ...note, title, body } : note
   );
   saveNotes(notes);
 }
