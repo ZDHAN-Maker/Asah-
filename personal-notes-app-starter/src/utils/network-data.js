@@ -24,8 +24,7 @@ async function login({ email, password }) {
     headers: {
       "Content-Type": "application/json",
     },
-    // ⬇️ API butuh username, kita isi dengan email
-    body: JSON.stringify({ username: email, password }),
+    body: JSON.stringify({ email, password }), 
   });
 
   const responseJson = await response.json();
@@ -44,8 +43,7 @@ async function register({ name, email, password }) {
     headers: {
       "Content-Type": "application/json",
     },
-
-    body: JSON.stringify({ name, username: email, password }),
+    body: JSON.stringify({ name, email, password }),
   });
 
   const responseJson = await response.json();

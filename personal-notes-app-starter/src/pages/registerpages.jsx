@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { LanguageContext, LanguageProvider } from "../contexts/languagecontext";
+import { AuthContext } from "../contexts/AuthContext";
+import { LanguageContext } from "../contexts/languagecontext";
 
 export default function RegisterPage() {
   const [name, setName] = useState("");
@@ -8,11 +9,12 @@ export default function RegisterPage() {
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const navigate = useNavigate();
+  const { register } = useContext(AuthContext); 
   const { language, translations } = useContext(LanguageContext);
 
   const t = translations[language];
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
 
     if (password !== confirm) {
@@ -24,26 +26,18 @@ export default function RegisterPage() {
       return;
     }
 
-    const users = JSON.parse(localStorage.getItem("users")) || [];
-    if (users.find((u) => u.email === email)) {
-      alert(language === "id" ? "Email sudah terdaftar!" : "Email already registered!");
-      return;
+    const success = await register({ name, email, password }); 
+    if (success) {
+      alert(
+        language === "id"
+          ? "Pendaftaran berhasil! Silakan login."
+          : "Registration successful! Please login."
+      );
+      navigate("/login");
     }
-
-    const newUser = { name, email, password };
-    users.push(newUser);
-    localStorage.setItem("users", JSON.stringify(users));
-
-    alert(
-      language === "id"
-        ? "Pendaftaran berhasil! Silakan login."
-        : "Registration successful! Please login."
-    );
-    navigate("/login");
   };
 
   return (
-    <LanguageProvider>
     <main>
       <h2>{t.registerTitle}</h2>
       <form className="input-register" onSubmit={handleRegister}>
@@ -86,6 +80,5 @@ export default function RegisterPage() {
         {t.loginText} <Link to="/login">{t.loginLink}</Link>
       </p>
     </main>
-    </LanguageProvider> 
   );
 }

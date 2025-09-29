@@ -21,14 +21,16 @@ export function AuthProvider({ children }) {
         setLoading(false);
         return;
       }
-
-      putAccessToken(token); // ⬅️ supaya dipakai di getUserLogged
-
+      
+      putAccessToken(token); 
+      
       const { error, data } = await getUserLogged();
       if (!error) {
         setUser(data);
+        localStorage.setItem("user", JSON.stringify(data)); 
       } else {
         setUser(null);
+        localStorage.removeItem("user");
       }
       setLoading(false);
     }
@@ -48,6 +50,7 @@ export function AuthProvider({ children }) {
       const { error: userError, data: userData } = await getUserLogged();
       if (!userError) {
         setUser(userData);
+        localStorage.setItem("user", JSON.stringify(userData)); 
         return true;
       }
     }
@@ -64,6 +67,7 @@ export function AuthProvider({ children }) {
   // fungsi logout
   const logout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("user"); 
     setUser(null);
   };
 

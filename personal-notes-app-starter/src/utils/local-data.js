@@ -4,8 +4,7 @@ const STORAGE_KEY = "notes-app-data";
 function getInitialNotes() {
   const userData = JSON.parse(localStorage.getItem("user"));
 
-  
-  if (!userData || !userData.email) {
+  if (!userData || !userData.name) {
     return [
       {
         id: `notes-${+new Date()}`,
@@ -17,17 +16,17 @@ function getInitialNotes() {
     ];
   }
 
-  
   return [
     {
       id: `notes-${+new Date()}`,
-      title: userData.email,
-      body: "Ini adalah catatan awal Anda. Silakan edit atau tambah catatan baru!",
+      title: `Welcome to Notes, ${userData.name}!`, 
+      body: "Welcome to Notes! This is your first note. You can archive it, delete it, or create new ones.",
       createdAt: new Date().toISOString(),
       archived: false,
     },
   ];
 }
+
 
 // ambil data dari localStorage
 function getNotes() {
